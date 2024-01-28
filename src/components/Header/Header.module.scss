@@ -16,9 +16,11 @@
 	font-weight: 700;
 	line-height: 35px;
 	text-transform: uppercase;
+	letter-spacing: 0.15px;
 	border-radius: 5px;
 	padding: 0 10px;
 	text-decoration: none;
+
 	&:hover {
 		background-color: #4361ee;
 	}
@@ -27,5 +29,9 @@
 .buttons {
 	button {
 		margin-left: 10px;
+	}
+
+	a {
+		text-decoration: none;
 	}
 }

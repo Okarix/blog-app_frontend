@@ -1,10 +1,6 @@
 import { Container } from '@mui/material';
-import { AddPost } from './components/AddPost/AddPost';
-import { Header } from './components/Header/Header';
-import { FullPost } from './pages/FullPost';
-import { Home } from './pages/Home';
-import { Login } from './pages/Login/Login';
-import { Registration } from './pages/Registration/Registration';
+import { Header } from './components';
+import { Login, Registration, AddPost, Home, FullPost } from './pages';
 
 function App() {
 	return (
@@ -12,10 +8,10 @@ function App() {
 			<Header />
 			<Container maxWidth='lg'>
 				<Home />
-				{/* <FullPost />
+				<FullPost />
 				<AddPost />
 				<Login />
-				<Registration /> */}
+				<Registration />
 			</Container>
 		</>
 	);

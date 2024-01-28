@@ -1,18 +1,25 @@
-import { Button, Paper, TextField } from '@mui/material';
-import React from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 
 export const AddPost = () => {
-	const [value, setValue] = React.useState('');
+	const imageUrl = '';
+	const [value, setValue] = useState('');
 
-	const onChange = React.useCallback(value => {
+	const handleChangeFile = () => {};
+
+	const onClickRemoveImage = () => {};
+
+	const onChange = useCallback(value => {
 		setValue(value);
 	}, []);
 
-	const options = React.useMemo(
+	const options = useMemo(
 		() => ({
 			spellChecker: false,
 			maxHeight: '400px',
@@ -35,6 +42,27 @@ export const AddPost = () => {
 			>
 				Загрузить превью
 			</Button>
+			<input
+				type='file'
+				onChange={handleChangeFile}
+				hidden
+			/>
+			{imageUrl && (
+				<Button
+					variant='contained'
+					color='error'
+					onClick={onClickRemoveImage}
+				>
+					Удалить
+				</Button>
+			)}
+			{imageUrl && (
+				<img
+					className={styles.image}
+					src={`http://localhost:4444${imageUrl}`}
+					alt='Uploaded'
+				/>
+			)}
 			<br />
 			<br />
 			<TextField
@@ -62,7 +90,9 @@ export const AddPost = () => {
 				>
 					Опубликовать
 				</Button>
-				<Button size='large'>Отмена</Button>
+				<a href='/'>
+					<Button size='large'>Отмена</Button>
+				</a>
 			</div>
 		</Paper>
 	);
