@@ -46,7 +46,7 @@ export const Home = () => {
 							/>
 						) : (
 							<Post
-								id={obj._id}
+								_id={obj._id}
 								title={obj.title}
 								imageUrl={obj.imageUrl}
 								user={obj.user}
