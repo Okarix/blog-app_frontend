@@ -6,6 +6,11 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 	return data;
 });
 
+export const fetchTags = createAsyncThunk('/posts/fetchTags', async () => {
+	const { data } = await instance.get('/posts/tags');
+	return data;
+});
+
 const initialState = {
 	posts: {
 		items: [],
@@ -41,6 +46,26 @@ const postsSlice = createSlice({
 			}
 			state.posts.items = [];
 			state.posts.status = 'error';
+		});
+		builder.addCase(fetchTags.pending, state => {
+			if (!state.tags) {
+				state.tags = {};
+			}
+			state.tags.status = 'loading';
+		});
+		builder.addCase(fetchTags.fulfilled, (state, action) => {
+			if (!state.tags) {
+				state.tags = {};
+			}
+			state.tags.items = action.payload;
+			state.tags.status = 'loaded';
+		});
+		builder.addCase(fetchTags.rejected, state => {
+			if (!state.tags) {
+				state.tags = {};
+			}
+			state.tags.items = [];
+			state.tags.status = 'error';
 		});
 	},
 }); // slice create
