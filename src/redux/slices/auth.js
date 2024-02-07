@@ -6,6 +6,11 @@ export const fetchAuth = createAsyncThunk('auth/fetchUserData', async params => 
 	return data;
 });
 
+export const fetchLogin = createAsyncThunk('me/fetchLogin', async () => {
+	const { data } = await instance.get('/me');
+	return data;
+});
+
 const initialState = {
 	data: null,
 	status: 'loading',
@@ -29,6 +34,18 @@ const authSlice = createSlice({
 			state.status = 'loaded';
 		});
 		builder.addCase(fetchAuth.rejected, state => {
+			state.status = 'error';
+			state.data = null;
+		});
+		builder.addCase(fetchLogin.pending, state => {
+			state.status = 'loading';
+			state.data = null;
+		});
+		builder.addCase(fetchLogin.fulfilled, (state, action) => {
+			state.data = action.payload;
+			state.status = 'loaded';
+		});
+		builder.addCase(fetchLogin.rejected, state => {
 			state.status = 'error';
 			state.data = null;
 		});
