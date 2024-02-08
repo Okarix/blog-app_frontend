@@ -11,6 +11,11 @@ export const fetchLogin = createAsyncThunk('me/fetchLogin', async () => {
 	return data;
 });
 
+export const fetchRegister = createAsyncThunk('auth/fetchRegister', async params => {
+	const { data } = await instance.post('/register', params);
+	return data;
+});
+
 const initialState = {
 	data: null,
 	status: 'loading',
@@ -46,6 +51,18 @@ const authSlice = createSlice({
 			state.status = 'loaded';
 		});
 		builder.addCase(fetchLogin.rejected, state => {
+			state.status = 'error';
+			state.data = null;
+		});
+		builder.addCase(fetchRegister.pending, state => {
+			state.status = 'loading';
+			state.data = null;
+		});
+		builder.addCase(fetchRegister.fulfilled, (state, action) => {
+			state.data = action.payload;
+			state.status = 'loaded';
+		});
+		builder.addCase(fetchRegister.rejected, state => {
 			state.status = 'error';
 			state.data = null;
 		});

@@ -70,6 +70,7 @@ export const Login = () => {
 					variant='contained'
 					fullWidth
 					type='submit'
+					disabled={!isValid}
 				>
 					Войти
 				</Button>
