@@ -7,15 +7,16 @@ import { selectIsAuth } from '../../redux/slices/auth';
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import instance from '../../axios';
 
 export const AddPost = () => {
+	const navigate = useNavigate();
 	const isAuth = useSelector(selectIsAuth);
-
-	const [value, setValue] = useState('');
+	const [isLoading, setLoading] = useState(false);
 	const [title, setTitle] = useState('');
 	const [tags, setTags] = useState('');
+	const [text, setText] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
 
 	const inputFileRef = useRef(null);
@@ -33,15 +34,35 @@ export const AddPost = () => {
 		}
 	};
 
-	console.log(imgUrl);
-
 	const onClickRemoveImage = () => {
 		setImgUrl('');
 	};
 
-	const onChange = useCallback(value => {
-		setValue(value);
+	const onChange = useCallback(text => {
+		setText(text);
 	}, []);
+
+	const onSubmit = async () => {
+		try {
+			setLoading(true);
+
+			const fields = {
+				title,
+				text,
+				tags: tags.split(','),
+				imgUrl,
+			};
+
+			const { data } = await instance.post('/posts', fields);
+
+			const id = data._id;
+
+			navigate(`/posts/${id}`);
+		} catch (err) {
+			console.warn(err);
+			// alert('Failed when creating post');
+		}
+	};
 
 	const options = useMemo(
 		() => ({
@@ -113,12 +134,13 @@ export const AddPost = () => {
 			/>
 			<SimpleMDE
 				className={styles.editor}
-				value={value}
+				value={text}
 				onChange={onChange}
 				options={options}
 			/>
 			<div className={styles.buttons}>
 				<Button
+					onClick={onSubmit}
 					size='large'
 					variant='contained'
 				>
