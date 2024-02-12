@@ -35,7 +35,9 @@ export const AddPost = () => {
 
 	console.log(imgUrl);
 
-	const onClickRemoveImage = () => {};
+	const onClickRemoveImage = () => {
+		setImgUrl('');
+	};
 
 	const onChange = useCallback(value => {
 		setValue(value);
