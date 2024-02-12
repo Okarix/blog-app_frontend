@@ -14,6 +14,8 @@ export const AddPost = () => {
 
 	const imageUrl = '';
 	const [value, setValue] = useState('');
+	const [title, setTitle] = useState('');
+	const [tags, setTags] = useState('');
 
 	const handleChangeFile = () => {};
 
@@ -38,9 +40,11 @@ export const AddPost = () => {
 		[]
 	);
 
-	if (!isAuth) {
+	if (!window.localStorage.getItem('token') && !isAuth) {
 		return <Navigate to='/' />;
 	}
+
+	console.log({ title, tags, value });
 
 	return (
 		<Paper style={{ padding: 30 }}>
@@ -77,12 +81,16 @@ export const AddPost = () => {
 				classes={{ root: styles.title }}
 				variant='standard'
 				placeholder='Заголовок статьи...'
+				value={title}
+				onChange={e => setTitle(e.target.value)}
 				fullWidth
 			/>
 			<TextField
 				classes={{ root: styles.tags }}
 				variant='standard'
 				placeholder='Тэги'
+				onChange={e => setTags(e.target.value)}
+				value={tags}
 				fullWidth
 			/>
 			<SimpleMDE
