@@ -28,7 +28,6 @@ export const AddPost = () => {
 			formData.append('image', file);
 			const { data } = await instance.post('/upload', formData);
 			setImageUrl(data.url);
-			console.log(data.url);
 		} catch (err) {
 			console.warn(err);
 			alert('Error when file upload');
@@ -61,7 +60,7 @@ export const AddPost = () => {
 			navigate(`/posts/${id}`);
 		} catch (err) {
 			console.warn(err);
-			// alert('Failed when creating post');
+			alert('Failed when creating post');
 		}
 	};
 
