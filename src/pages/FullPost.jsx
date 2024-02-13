@@ -8,6 +8,7 @@ import instance from '../axios';
 export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setIsLoading] = useState(true);
+	console.log(data);
 
 	const { id } = useParams();
 
@@ -38,7 +39,7 @@ export const FullPost = () => {
 			<Post
 				id={data._id}
 				title={data.title}
-				imageUrl={data.imageUrl}
+				imageUrl={`http://localhost:4444/${data.imageUrl}`}
 				user={data.user}
 				createdAt={data.createdAt}
 				viewsCount={data.viewsCount}

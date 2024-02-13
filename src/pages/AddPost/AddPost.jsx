@@ -17,7 +17,7 @@ export const AddPost = () => {
 	const [title, setTitle] = useState('');
 	const [tags, setTags] = useState('');
 	const [text, setText] = useState('');
-	const [imgUrl, setImgUrl] = useState('');
+	const [imageUrl, setImageUrl] = useState('');
 
 	const inputFileRef = useRef(null);
 
@@ -27,7 +27,8 @@ export const AddPost = () => {
 			const file = event.target.files[0];
 			formData.append('image', file);
 			const { data } = await instance.post('/upload', formData);
-			setImgUrl(data.url);
+			setImageUrl(data.url);
+			console.log(data.url);
 		} catch (err) {
 			console.warn(err);
 			alert('Error when file upload');
@@ -35,7 +36,7 @@ export const AddPost = () => {
 	};
 
 	const onClickRemoveImage = () => {
-		setImgUrl('');
+		setImageUrl('');
 	};
 
 	const onChange = useCallback(text => {
@@ -47,10 +48,10 @@ export const AddPost = () => {
 			setLoading(true);
 
 			const fields = {
+				imageUrl,
 				title,
 				text,
 				tags: tags.split(','),
-				imgUrl,
 			};
 
 			const { data } = await instance.post('/posts', fields);
@@ -98,7 +99,7 @@ export const AddPost = () => {
 				onChange={handleChangeFile}
 				hidden
 			/>
-			{imgUrl && (
+			{imageUrl && (
 				<>
 					<Button
 						variant='contained'
@@ -109,7 +110,7 @@ export const AddPost = () => {
 					</Button>
 					<img
 						className={styles.image}
-						src={`http://localhost:4444/${imgUrl}`}
+						src={`http://localhost:4444/${imageUrl}`}
 						alt='Uploaded'
 					/>
 				</>
