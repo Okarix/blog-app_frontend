@@ -50,7 +50,7 @@ export const AddPost = () => {
 				imageUrl,
 				title,
 				text,
-				tags: tags.split(','),
+				tags: tags,
 			};
 
 			const { data } = await instance.post('/posts', fields);

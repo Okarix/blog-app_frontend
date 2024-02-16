@@ -8,13 +8,21 @@ import { Link } from 'react-router-dom';
 import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
 import { PostSkeleton } from './Skeleton';
+import { useDispatch } from 'react-redux';
+import { fetchRemovePost } from '../../redux/slices/posts';
 
 export const Post = ({ _id, title, createdAt, imageUrl, user, viewsCount, commentsCount, tags, children, isFullPost, isLoading, isEditable }) => {
+	const dispatch = useDispatch();
+
 	if (isLoading) {
 		return <PostSkeleton />;
 	}
 
-	const onClickRemove = () => {};
+	const onClickRemove = () => {
+		if (window.confirm('You sure you want to remove post?')) {
+			dispatch(fetchRemovePost(_id));
+		}
+	};
 
 	return (
 		<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
