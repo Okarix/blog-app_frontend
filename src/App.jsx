@@ -28,6 +28,10 @@ function App() {
 						element={<FullPost />}
 					/>
 					<Route
+						path='/posts/:id/edit'
+						element={<AddPost />}
+					/>
+					<Route
 						path='/addPost'
 						element={<AddPost />}
 					/>

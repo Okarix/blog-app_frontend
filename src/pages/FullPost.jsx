@@ -9,7 +9,6 @@ import Markdown from 'react-markdown';
 export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setIsLoading] = useState(true);
-	console.log(data);
 
 	const { id } = useParams();
 

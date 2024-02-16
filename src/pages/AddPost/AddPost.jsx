@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -7,12 +7,15 @@ import { selectIsAuth } from '../../redux/slices/auth';
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import instance from '../../axios';
 
 export const AddPost = () => {
 	const navigate = useNavigate();
 	const isAuth = useSelector(selectIsAuth);
+	const { id } = useParams();
+	const isEditing = Boolean(id);
+
 	const [isLoading, setLoading] = useState(false);
 	const [title, setTitle] = useState('');
 	const [tags, setTags] = useState('');
@@ -50,19 +53,35 @@ export const AddPost = () => {
 				imageUrl,
 				title,
 				text,
-				tags: tags,
+				tags,
 			};
 
-			const { data } = await instance.post('/posts', fields);
+			const { data } = isEditing ? await instance.patch(`/posts/${id}`, fields) : await instance.post('/posts', fields);
 
-			const id = data._id;
+			const _id = isEditing ? id : data._id;
 
-			navigate(`/posts/${id}`);
+			navigate(`/posts/${_id}`);
 		} catch (err) {
 			console.warn(err);
-			alert('Failed when creating post');
+			alert('Failed when creating post', err);
 		}
 	};
+
+	useEffect(() => {
+		if (id) {
+			instance
+				.get(`/posts/${id}`)
+				.then(({ data }) => {
+					setTitle(data.title);
+					setText(data.text);
+					setImageUrl(data.imageUrl);
+					setTags(data.tags).join(', ');
+				})
+				.catch(err => {
+					console.warn(err);
+				});
+		}
+	}, []);
 
 	const options = useMemo(
 		() => ({
@@ -144,7 +163,7 @@ export const AddPost = () => {
 					size='large'
 					variant='contained'
 				>
-					Опубликовать
+					{isEditing ? 'Сохранить' : 'Опубликовать'}
 				</Button>
 				<a href='/'>
 					<Button size='large'>Отмена</Button>
