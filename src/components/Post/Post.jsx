@@ -56,8 +56,8 @@ export const Post = ({ _id, title, createdAt, imageUrl, user, viewsCount, commen
 				<div className={styles.indention}>
 					<h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>{isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}</h2>
 					<ul className={styles.tags}>
-						{tags.map(name => (
-							<li key={name}>
+						{tags.map((name, i) => (
+							<li key={i}>
 								<Link href={`/tag/${name}`}>#{name}</Link>
 							</li>
 						))}

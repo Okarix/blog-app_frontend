@@ -7,6 +7,7 @@ import { Post } from '../components/Post/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { fetchPosts, fetchTags } from '../redux/slices/posts.js';
+import { Skeleton } from '@mui/material';
 
 export const Home = () => {
 	const dispatch = useDispatch();
@@ -39,26 +40,30 @@ export const Home = () => {
 					xs={8}
 					item
 				>
-					{(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
-						isPostsLoading ? (
-							<Post
-								key={index}
-								isLoading={true}
-							/>
-						) : (
-							<Post
-								_id={obj._id}
-								title={obj.title}
-								imageUrl={obj.imageUrl ? `http://localhost:4444/${obj.imageUrl}` : null}
-								user={obj.user}
-								createdAt={obj.createdAt}
-								viewsCount={obj.viewsCount}
-								commentsCount={0}
-								tags={obj.tags}
-								isEditable={userData?._id === obj.user._id}
-							/>
-						)
-					)}
+					{isPostsLoading
+						? [...Array(1)].map((_, index) => (
+								<Skeleton
+									variant='rounded'
+									width={750}
+									height={495}
+									animation='wave'
+									key={`loading-${index}`}
+								/>
+						  ))
+						: posts.items.map(obj => (
+								<Post
+									key={obj._id}
+									_id={obj._id}
+									title={obj.title}
+									imageUrl={obj.imageUrl ? `http://localhost:4444/${obj.imageUrl}` : null}
+									user={obj.user}
+									createdAt={obj.createdAt}
+									viewsCount={obj.viewsCount}
+									commentsCount={0}
+									tags={obj.tags}
+									isEditable={userData?._id === obj.user._id}
+								/>
+						  ))}
 				</Grid>
 				<Grid
 					xs={4}
