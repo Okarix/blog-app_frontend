@@ -41,12 +41,9 @@ export const Home = () => {
 					item
 				>
 					{isPostsLoading
-						? [...Array(1)].map((_, index) => (
-								<Skeleton
-									variant='rounded'
-									width={750}
-									height={495}
-									animation='wave'
+						? [...Array(5)].map((_, index) => (
+								<Post
+									isLoading={isPostsLoading}
 									key={`loading-${index}`}
 								/>
 						  ))
