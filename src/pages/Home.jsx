@@ -1,32 +1,42 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../components/Post/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import { fetchPosts, fetchTags } from '../redux/slices/posts.js';
-import { Skeleton } from '@mui/material';
+import { fetchPopularPosts, fetchPosts, fetchTags } from '../redux/slices/posts.js';
 
 export const Home = () => {
 	const dispatch = useDispatch();
 	const { posts, tags } = useSelector(state => state.posts);
 	const userData = useSelector(state => state.auth.data);
 
+	const [activeTab, setActiveTab] = useState(0);
+
 	const isPostsLoading = posts.status === 'loading';
 	const isTagsLoading = tags.status === 'loading';
 
 	useEffect(() => {
-		dispatch(fetchPosts());
+		if (activeTab === 0) {
+			dispatch(fetchPosts());
+		} else {
+			dispatch(fetchPopularPosts());
+		}
 		dispatch(fetchTags());
-	}, []);
+	}, [activeTab, dispatch]);
+
+	const handleTabChange = (event, newValue) => {
+		setActiveTab(newValue);
+	};
 
 	return (
 		<>
 			<Tabs
 				style={{ marginBottom: 15 }}
-				value={0}
+				value={activeTab}
+				onChange={handleTabChange}
 				aria-label='basic tabs example'
 			>
 				<Tab label='Новые' />

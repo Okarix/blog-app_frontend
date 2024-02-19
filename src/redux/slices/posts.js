@@ -6,6 +6,11 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 	return data;
 });
 
+export const fetchPopularPosts = createAsyncThunk('posts/fetchPopularPosts', async () => {
+	const { data } = await instance.get('/posts/popular');
+	return data;
+});
+
 export const fetchTags = createAsyncThunk('/posts/fetchTags', async () => {
 	const { data } = await instance.get('/posts/tags');
 	return data;
@@ -76,6 +81,27 @@ const postsSlice = createSlice({
 		// DELETE POSTS
 		builder.addCase(fetchRemovePost.pending, (state, action) => {
 			state.posts.items = state.posts.items.filter(post => post._id !== action.meta.arg);
+		});
+		// GET POPULAR POSTS
+		builder.addCase(fetchPopularPosts.pending, state => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.status = 'loading';
+		});
+		builder.addCase(fetchPopularPosts.fulfilled, (state, action) => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.items = action.payload;
+			state.posts.status = 'loaded';
+		});
+		builder.addCase(fetchPopularPosts.rejected, state => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.items = [];
+			state.posts.status = 'error';
 		});
 	},
 }); // slice create
