@@ -2,28 +2,36 @@ import { useEffect, useState } from 'react';
 import { Post } from '../components';
 import { AddComment } from '../components';
 import { CommentsBlock } from '../components/CommentsBlock';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import instance from '../axios';
 import Markdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 
 export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
 
 	const { id } = useParams();
+	const userId = useSelector(state => state.auth.data?._id);
 
 	useEffect(() => {
-		instance
-			.get(`/posts/${id}`)
-			.then(res => {
-				setData(res.data);
-				setIsLoading(false);
-			})
-			.catch(err => {
-				console.warn(err);
-				alert('Error when receiving post');
-			});
-	}, []);
+		if (userId !== undefined) {
+			instance
+				.get(`/posts/${id}?viewed=${userId}`)
+				.then(res => {
+					setData(res.data);
+					setIsLoading(false);
+				})
+				.catch(err => {
+					console.warn(err);
+					alert('Error when receiving post');
+				});
+		} else {
+			alert('You must be logged in to view posts.');
+			navigate('/');
+		}
+	}, [userId]);
 
 	if (isLoading) {
 		return (
