@@ -3,15 +3,22 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
+import ClearIcon from '@mui/icons-material/Clear';
 import { fetchRegister, selectIsAuth } from '../../redux/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import styles from './Registration.module.scss';
+import { useRef, useState } from 'react';
+import instance from '../../axios';
 
 export const Registration = () => {
 	const isAuth = useSelector(selectIsAuth);
 	const dispatch = useDispatch();
+
+	const [avatarUrl, setAvatarUrl] = useState('');
+	const inputFileRef = useRef(null);
+
 	const {
 		register,
 		handleSubmit,
@@ -26,8 +33,26 @@ export const Registration = () => {
 		mode: 'onChange',
 	});
 
+	const onClickRemoveImage = () => {
+		setAvatarUrl('');
+	};
+
+	const handleChangeFile = async event => {
+		try {
+			const formData = new FormData();
+			const file = event.target.files[0];
+			formData.append('image', file);
+			const { data } = await instance.post('/upload', formData);
+			setAvatarUrl(data.url);
+		} catch (err) {
+			console.warn(err);
+			alert('Error when file upload');
+		}
+	};
+
 	const onSubmit = async values => {
-		const data = await dispatch(fetchRegister(values));
+		const data = await dispatch(fetchRegister({ ...values, avatarUrl: `http://localhost:4444/${avatarUrl}` }));
+		console.log(data);
 		if (!data.payload) {
 			alert('Failed to register');
 		}
@@ -49,8 +74,28 @@ export const Registration = () => {
 				Создание аккаунта
 			</Typography>
 			<form onSubmit={handleSubmit(onSubmit)}>
+				{avatarUrl && (
+					<>
+						<ClearIcon
+							sx={{ position: 'absolute', cursor: 'pointer', marginLeft: '60px' }}
+							fontSize='large'
+							color='error'
+							onClick={onClickRemoveImage}
+						/>
+					</>
+				)}
 				<div className={styles.avatar}>
-					<Avatar sx={{ width: 100, height: 100 }} />
+					<Avatar
+						sx={{ width: 100, height: 100, cursor: 'pointer' }}
+						onClick={() => inputFileRef.current.click()}
+						src={`http://localhost:4444/${avatarUrl}`}
+					/>
+					<input
+						type='file'
+						hidden
+						onChange={handleChangeFile}
+						ref={inputFileRef}
+					/>
 				</div>
 				<TextField
 					className={styles.field}
