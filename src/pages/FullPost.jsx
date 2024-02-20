@@ -14,6 +14,7 @@ export const FullPost = () => {
 
 	const { id } = useParams();
 	const userId = useSelector(state => state.auth.data?._id);
+	const token = window.localStorage.getItem('token');
 
 	useEffect(() => {
 		if (userId !== undefined) {
@@ -27,11 +28,13 @@ export const FullPost = () => {
 					console.warn(err);
 					alert('Error when receiving post');
 				});
-		} else {
-			alert('You must be logged in to view posts.');
-			navigate('/');
 		}
 	}, [userId]);
+
+	if (!token) {
+		alert('You must be logged in to view posts.');
+		navigate('/');
+	}
 
 	if (isLoading) {
 		return (
