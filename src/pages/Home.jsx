@@ -65,7 +65,7 @@ export const Home = () => {
 									imageUrl={obj.imageUrl ? `http://localhost:4444/${obj.imageUrl}` : null}
 									user={obj.user}
 									createdAt={obj.createdAt}
-									viewsCount={obj.viewsCount}
+									viewsCount={obj.viewedBy.length}
 									commentsCount={0}
 									tags={obj.tags}
 									isEditable={userData?._id === obj.user?._id}

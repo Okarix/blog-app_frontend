@@ -102,8 +102,6 @@ export const AddPost = () => {
 		return <Navigate to='/' />;
 	}
 
-	console.log(tags);
-
 	return (
 		<Paper style={{ padding: 30 }}>
 			<Button

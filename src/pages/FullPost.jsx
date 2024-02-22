@@ -53,7 +53,7 @@ export const FullPost = () => {
 				imageUrl={data.imageUrl ? `http://localhost:4444/${data.imageUrl}` : null}
 				user={data.user}
 				createdAt={data.createdAt}
-				viewsCount={data.viewsCount}
+				viewsCount={data.viewedBy.length}
 				commentsCount={0}
 				tags={data.tags}
 				isFullPost
