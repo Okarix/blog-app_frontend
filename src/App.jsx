@@ -5,10 +5,10 @@ import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchLogin, selectIsAuth } from './redux/slices/auth';
+import { Tags } from './pages/Tags';
 
 function App() {
 	const dispatch = useDispatch();
-	const isAuth = useSelector(selectIsAuth);
 
 	useEffect(() => {
 		dispatch(fetchLogin());
@@ -38,6 +38,10 @@ function App() {
 					<Route
 						path='/login'
 						element={<Login />}
+					/>
+					<Route
+						path='/posts/byTag/:tag'
+						element={<Tags />}
 					/>
 					<Route
 						path='/register'

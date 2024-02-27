@@ -11,6 +11,11 @@ export const fetchPopularPosts = createAsyncThunk('posts/fetchPopularPosts', asy
 	return data;
 });
 
+export const fetchByTag = createAsyncThunk('/posts/fetchByTag', async tag => {
+	const { data } = await instance.get(`/posts/byTag/${tag}`);
+	return data;
+});
+
 export const fetchTags = createAsyncThunk('/posts/fetchTags', async () => {
 	const { data } = await instance.get('/posts/tags');
 	return data;
@@ -97,6 +102,27 @@ const postsSlice = createSlice({
 			state.posts.status = 'loaded';
 		});
 		builder.addCase(fetchPopularPosts.rejected, state => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.items = [];
+			state.posts.status = 'error';
+		});
+		// GET POSTS BY TAG
+		builder.addCase(fetchByTag.pending, state => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.status = 'loading';
+		});
+		builder.addCase(fetchByTag.fulfilled, (state, action) => {
+			if (!state.posts) {
+				state.posts = {};
+			}
+			state.posts.items = action.payload;
+			state.posts.status = 'loaded';
+		});
+		builder.addCase(fetchByTag.rejected, state => {
 			if (!state.posts) {
 				state.posts = {};
 			}

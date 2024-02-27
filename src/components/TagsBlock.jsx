@@ -5,17 +5,17 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import TagIcon from '@mui/icons-material/Tag';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
-
 import { SideBlock } from './SideBlock/SideBlock';
+import { Link } from 'react-router-dom';
 
 export const TagsBlock = ({ items, isLoading = true }) => {
 	return (
 		<SideBlock title='Тэги'>
 			<List>
 				{(isLoading ? [...Array(5)] : items).map((name, i) => (
-					<a
+					<Link
 						style={{ textDecoration: 'none', color: 'black' }}
-						href={`/tags/${name}`}
+						to={`/posts/byTag/${name}`}
 						key={i}
 					>
 						<ListItem
@@ -26,10 +26,17 @@ export const TagsBlock = ({ items, isLoading = true }) => {
 								<ListItemIcon>
 									<TagIcon />
 								</ListItemIcon>
-								{isLoading ? <Skeleton width={100} /> : <ListItemText primary={name} />}
+								{isLoading ? (
+									<Skeleton width={100} />
+								) : (
+									<ListItemText
+										onClick={() => onClickTag(name)}
+										primary={name}
+									/>
+								)}
 							</ListItemButton>
 						</ListItem>
-					</a>
+					</Link>
 				))}
 			</List>
 		</SideBlock>

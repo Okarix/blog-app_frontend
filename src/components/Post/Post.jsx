@@ -58,7 +58,7 @@ export const Post = ({ _id, title, createdAt, imageUrl, user, viewsCount, commen
 					<ul className={styles.tags}>
 						{tags.map((name, i) => (
 							<li key={i}>
-								<Link href={`/tag/${name}`}>#{name}</Link>
+								<Link to={`/posts/byTag/${name}`}>#{name}</Link>
 							</li>
 						))}
 					</ul>
