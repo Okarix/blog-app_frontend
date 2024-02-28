@@ -6,6 +6,8 @@ import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { fetchByTag, fetchTags } from '../redux/slices/posts.js';
 import { useParams } from 'react-router-dom';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 export const Tags = () => {
 	const { tag } = useParams();
@@ -24,6 +26,13 @@ export const Tags = () => {
 
 	return (
 		<>
+			<Tabs
+				style={{ marginBottom: 15 }}
+				value={0}
+				aria-label='basic tabs example'
+			>
+				<Tab label={`Посты по тэгу: ${tag}`} />
+			</Tabs>
 			<Grid
 				container
 				spacing={4}
