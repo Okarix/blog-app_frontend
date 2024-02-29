@@ -62,7 +62,7 @@ export const Home = () => {
 									key={obj._id}
 									_id={obj._id}
 									title={obj.title}
-									imageUrl={obj.imageUrl ? `${import.meta.env.REACT_APP_API_URL}${obj.imageUrl}` : null}
+									imageUrl={obj.imageUrl ? `${import.meta.env.VITE_API_URL}${obj.imageUrl}` : null}
 									user={obj.user}
 									createdAt={obj.createdAt}
 									viewsCount={obj.viewedBy.length}

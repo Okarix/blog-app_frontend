@@ -128,7 +128,7 @@ export const AddPost = () => {
 					</Button>
 					<img
 						className={styles.image}
-						src={`${import.meta.env.REACT_APP_API_URL}${imageUrl}`}
+						src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
 						alt='Uploaded'
 					/>
 				</>

@@ -59,7 +59,7 @@ export const FullPost = () => {
 			<Post
 				id={data._id}
 				title={data.title}
-				imageUrl={data.imageUrl ? `${import.meta.env.REACT_APP_API_URL}${data.imageUrl}` : null}
+				imageUrl={data.imageUrl ? `${import.meta.env.VITE_API_URL}${data.imageUrl}` : null}
 				user={data.user}
 				createdAt={data.createdAt}
 				viewsCount={data.viewedBy.length}

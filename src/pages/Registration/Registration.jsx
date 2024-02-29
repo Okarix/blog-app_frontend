@@ -51,7 +51,7 @@ export const Registration = () => {
 	};
 
 	const onSubmit = async values => {
-		const data = await dispatch(fetchRegister({ ...values, avatarUrl: `${import.meta.env.REACT_APP_API_URL}${avatarUrl}` }));
+		const data = await dispatch(fetchRegister({ ...values, avatarUrl: `${import.meta.env.VITE_API_URL}${avatarUrl}` }));
 		console.log(data);
 		if (!data.payload) {
 			alert('Failed to register');
@@ -88,7 +88,7 @@ export const Registration = () => {
 					<Avatar
 						sx={{ width: 100, height: 100, cursor: 'pointer' }}
 						onClick={() => inputFileRef.current.click()}
-						src={`${import.meta.env.REACT_APP_API_URL}${avatarUrl}`}
+						src={`${import.meta.env.VITE_API_URL}${avatarUrl}`}
 					/>
 					<input
 						type='file'
