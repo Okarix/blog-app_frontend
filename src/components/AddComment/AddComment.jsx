@@ -17,6 +17,7 @@ export const AddComment = () => {
 		register,
 		handleSubmit,
 		setError,
+		reset,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -27,10 +28,8 @@ export const AddComment = () => {
 
 	const onSubmit = async values => {
 		try {
-			const action = await dispatch(createComment({ postId: id, text: values.text }));
-			const data = action.payload;
-			console.log(data);
-			return data;
+			await dispatch(createComment({ postId: id, text: values.text }));
+			reset();
 		} catch (error) {
 			console.error('Error occurred while creating comment:', error);
 		}
