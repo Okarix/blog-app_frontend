@@ -51,7 +51,7 @@ export const Registration = () => {
 	};
 
 	const onSubmit = async values => {
-		const data = await dispatch(fetchRegister({ ...values, avatarUrl: `http://localhost:4444/${avatarUrl}` }));
+		const data = await dispatch(fetchRegister({ ...values, avatarUrl: `${process.env.REACT_APP_API_URL}${avatarUrl}` }));
 		console.log(data);
 		if (!data.payload) {
 			alert('Failed to register');
@@ -88,7 +88,7 @@ export const Registration = () => {
 					<Avatar
 						sx={{ width: 100, height: 100, cursor: 'pointer' }}
 						onClick={() => inputFileRef.current.click()}
-						src={`http://localhost:4444/${avatarUrl}`}
+						src={`${process.env.REACT_APP_API_URL}${avatarUrl}`}
 					/>
 					<input
 						type='file'
