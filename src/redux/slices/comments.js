@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import instance from '../../axios';
 
-export const fetchCreateComment = createAsyncThunk('comments/createComment', async (postId, text) => {
-	const { data } = await instance.post(`/posts/${postId}/createComment`, text);
+export const createComment = createAsyncThunk('comments/createComment', async ({ postId, text }) => {
+	const { data } = await instance.post(`/posts/${postId}/createComment`, { text: text });
 
 	return data;
 });
@@ -25,7 +25,7 @@ const commentsSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: builder => {
-		builder.addCase(fetchCreateComment.fulfilled, (state, action) => {
+		builder.addCase(createComment.fulfilled, (state, action) => {
 			state.comments.items.push(action.payload);
 		});
 		builder.addCase(fetchComments.pending, state => {
