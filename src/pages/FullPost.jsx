@@ -5,16 +5,21 @@ import { CommentsBlock } from '../components/CommentsBlock';
 import { useNavigate, useParams } from 'react-router-dom';
 import instance from '../axios';
 import Markdown from 'react-markdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchComments } from '../redux/slices/comments';
 
 export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const { id } = useParams();
+	const comments = useSelector(state => state.comments.comments);
 	const userId = useSelector(state => state.auth.data?._id);
 	const token = window.localStorage.getItem('token');
+
+	const isCommentLoading = comments.status === 'loading';
 
 	useEffect(() => {
 		if (userId !== undefined) {
@@ -30,6 +35,10 @@ export const FullPost = () => {
 				});
 		}
 	}, [userId]);
+
+	useEffect(() => {
+		dispatch(fetchComments(id));
+	}, [id]);
 
 	if (!token) {
 		alert('You must be logged in to view posts.');
@@ -61,23 +70,8 @@ export const FullPost = () => {
 				<Markdown>{data.text}</Markdown>
 			</Post>
 			<CommentsBlock
-				items={[
-					{
-						user: {
-							fullName: 'Вася Пупкин',
-							avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-						},
-						text: 'Это тестовый комментарий 555555',
-					},
-					{
-						user: {
-							fullName: 'Иван Иванов',
-							avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-						},
-						text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-					},
-				]}
-				isLoading={false}
+				comments={comments}
+				isLoading={isCommentLoading}
 			>
 				<AddComment />
 			</CommentsBlock>
